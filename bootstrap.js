@@ -1,9 +1,10 @@
 (async function() {
     'use strict';
+
+    const HACK_URL = 'https://raw.githubusercontent.com/lzhenwei76-beep/MathlethicsCheat/main/hack.js';
     
     const CSS_URL = 'https://raw.githubusercontent.com/lzhenwei76-beep/scriptloader/refs/heads/main/loader.css';
     const LOADER_URL = 'https://raw.githubusercontent.com/lzhenwei76-beep/scriptloader/refs/heads/main/loader.js';
-    const HACK_URL = 'https://raw.githubusercontent.com/lzhenwei76-beep/MathlethicsCheat/main/hack.js';
     
     // CSS laden
     const link = document.createElement('link');
