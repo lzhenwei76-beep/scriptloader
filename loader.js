@@ -1,92 +1,94 @@
-(async function() {
+(function() {
     'use strict';
     
-    // ========== KONFIGURATION ==========
-    const SCRIPT_URL = 'https://raw.githubusercontent.com/lzhenwei76-beep/MathlethicsCheat/refs/heads/main/Mathletics_Hack.js';
-    const CSS_URL = 'https://raw.githubusercontent.com/lzhenwei76-beep/MathlethicsCheat/main/loader.css';
+    // ========== GLOBAL VARIABLES ==========
+    let currentPercent = 0;
+    let gui = null;
+    let fill = null;
+    let statusText = null;
+    let statusDetail = null;
+    let speedEl = null;
+    let hackUrl = null;
     
-    // ========== CSS IMPORTIEREN ==========
-    const style = document.createElement('link');
-    style.rel = 'stylesheet';
-    style.href = CSS_URL;
-    document.head.appendChild(style);
-    
-    // Kurze Wartezeit bis CSS geladen ist
-    await new Promise(r => setTimeout(r, 100));
-    
-    // ========== GUI ==========
-    const gui = document.createElement('div');
-    gui.className = 'smooth-loader';
-    
-    gui.innerHTML = `
-        <div class="loader-header">
-            <span class="loader-title">⚡ SCRIPT LOADER</span>
-            <span class="loader-close" id="close-loader">✕</span>
-        </div>
-        <div class="animation-icon">
-            <div class="icon-loading" id="loading-icon"></div>
-            <div class="icon-success" id="success-icon">✅</div>
-            <div class="icon-error" id="error-icon">❌</div>
-        </div>
-        <div class="progress-container">
-            <div class="progress-bar">
-                <div class="progress-fill" id="progress-fill"></div>
+    // ========== CREATE GUI ==========
+    function createGUI() {
+        gui = document.createElement('div');
+        gui.className = 'smooth-loader';
+        
+        gui.innerHTML = `
+            <div class="loader-header">
+                <span class="loader-title">⚡ SCRIPT LOADER</span>
+                <span class="loader-close" id="close-loader">✕</span>
             </div>
-        </div>
-        <div class="status-text" id="status-text">Loading script...</div>
-        <div class="status-detail" id="status-detail"></div>
-        <div class="speed-indicator" id="speed-indicator"></div>
-        <div id="error-container"></div>
-        <button class="retry-btn hidden" id="retry-btn">⟳ Retry</button>
-        <div class="footer-credit">
-            ✨ created by <span>lzhenwei</span> ✨
-        </div>
-    `;
+            <div class="animation-icon">
+                <div class="icon-loading" id="loading-icon"></div>
+                <div class="icon-success" id="success-icon">✅</div>
+                <div class="icon-error" id="error-icon">❌</div>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </div>
+            <div class="status-text" id="status-text">Loading script...</div>
+            <div class="status-detail" id="status-detail"></div>
+            <div class="speed-indicator" id="speed-indicator"></div>
+            <div id="error-container"></div>
+            <button class="retry-btn hidden" id="retry-btn">⟳ Retry</button>
+            <div class="footer-credit">
+                ✨ created by <span>lzhenwei</span> ✨
+            </div>
+        `;
+        
+        document.body.appendChild(gui);
+        
+        fill = document.getElementById('progress-fill');
+        statusText = document.getElementById('status-text');
+        statusDetail = document.getElementById('status-detail');
+        speedEl = document.getElementById('speed-indicator');
+        
+        // Close button
+        document.getElementById('close-loader').onclick = () => {
+            gui.classList.add('fade-out');
+            setTimeout(() => gui.remove(), 400);
+        };
+        
+        // Drag & Drop
+        makeDraggable(gui);
+    }
     
-    document.body.appendChild(gui);
-    
-    // ========== DRAG & DROP ==========
-    let isDragging = false;
-    let dragStartX, dragStartY, guiStartX, guiStartY;
-    
-    gui.addEventListener('mousedown', (e) => {
-        if (e.target.id === 'close-loader') return;
-        isDragging = true;
-        dragStartX = e.clientX;
-        dragStartY = e.clientY;
-        guiStartX = gui.offsetLeft;
-        guiStartY = gui.offsetTop;
-        gui.style.cursor = 'grabbing';
-        e.preventDefault();
-    });
-    
-    document.addEventListener('mousemove', (e) => {
-        if (!isDragging) return;
-        const dx = e.clientX - dragStartX;
-        const dy = e.clientY - dragStartY;
-        gui.style.left = (guiStartX + dx) + 'px';
-        gui.style.top = (guiStartY + dy) + 'px';
-        gui.style.right = 'auto';
-        gui.style.bottom = 'auto';
-    });
-    
-    document.addEventListener('mouseup', () => {
-        isDragging = false;
-        gui.style.cursor = '';
-    });
-    
-    document.getElementById('close-loader').onclick = () => {
-        gui.classList.add('fade-out');
-        setTimeout(() => gui.remove(), 400);
-    };
+    function makeDraggable(element) {
+        let isDragging = false;
+        let dragStartX, dragStartY, elementStartX, elementStartY;
+        
+        element.addEventListener('mousedown', (e) => {
+            if (e.target.id === 'close-loader') return;
+            isDragging = true;
+            dragStartX = e.clientX;
+            dragStartY = e.clientY;
+            elementStartX = element.offsetLeft;
+            elementStartY = element.offsetTop;
+            element.style.cursor = 'grabbing';
+            e.preventDefault();
+        });
+        
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            const dx = e.clientX - dragStartX;
+            const dy = e.clientY - dragStartY;
+            element.style.left = (elementStartX + dx) + 'px';
+            element.style.top = (elementStartY + dy) + 'px';
+            element.style.right = 'auto';
+            element.style.bottom = 'auto';
+        });
+        
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+            element.style.cursor = '';
+        });
+    }
     
     // ========== UPDATE FUNCTIONS ==========
-    let currentPercent = 0;
-    const fill = document.getElementById('progress-fill');
-    const statusText = document.getElementById('status-text');
-    const statusDetail = document.getElementById('status-detail');
-    const speedEl = document.getElementById('speed-indicator');
-    
     function updateProgress(percent, text, detail = '') {
         if (percent < currentPercent) return;
         currentPercent = Math.min(100, Math.max(currentPercent, percent));
@@ -127,7 +129,7 @@
         retryBtn.onclick = () => { gui.remove(); location.reload(); };
     }
     
-    // ========== SMOOTH WAIT ==========
+    // ========== WAIT & PROGRESS ==========
     function smoothWait(minSec, maxSec) {
         const duration = (minSec + Math.random() * (maxSec - minSec)) * 1000;
         const speeds = ['▰▰▰▰▰', '▰▰▰▰▱', '▰▰▰▱▱', '▰▰▱▱▱', '▰▱▱▱▱'];
@@ -135,7 +137,6 @@
         return new Promise(resolve => setTimeout(resolve, duration));
     }
     
-    // ========== SMOOTH PROGRESS ==========
     async function animateProgress(targetPercent, text, detail, durationMs) {
         const startPercent = currentPercent;
         if (targetPercent <= startPercent) return;
@@ -166,8 +167,13 @@
         });
     }
     
-    // ========== START ==========
-    async function startLoading() {
+    // ========== LOAD SCRIPT (bekommt URL von außen) ==========
+    async function loadScript(url) {
+        if (!url) {
+            showError('NO_URL', 'No script URL provided');
+            return;
+        }
+        
         await animateProgress(12, 'Connecting to server...', '', 600);
         await smoothWait(0.5, 1.2);
         
@@ -195,7 +201,7 @@
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), 10000);
             
-            const response = await fetch(SCRIPT_URL, { signal: controller.signal });
+            const response = await fetch(url, { signal: controller.signal });
             clearTimeout(timeoutId);
             
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -229,6 +235,12 @@
         }
     }
     
-    startLoading();
+    // ========== EXPORT FUNKTION FÜR BOOTSTRAP ==========
+    window.MathLoader = {
+        init: function(url) {
+            createGUI();
+            loadScript(url);
+        }
+    };
     
 })();
