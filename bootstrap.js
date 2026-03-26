@@ -1,7 +1,9 @@
 (async function() {
     'use strict';
 
-    const HACK_URL = 'https://raw.githubusercontent.com/lzhenwei76-beep/Scripts/refs/heads/main/stats-overlay.js';
+    // Here u can paste the link of a hack just delete the example. It will takes few seconds to load a hack.
+    const HACK_URL = 'PASTE HERE THE LINK'; 
+
     const LOADER_URL = 'https://raw.githubusercontent.com/lzhenwei76-beep/scriptloader/refs/heads/main/loader.js';
     
     // ========== CSS DIREKT EINFÜGEN (damit Loader GUI hat) ==========
