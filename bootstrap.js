@@ -2,7 +2,7 @@
     'use strict';
 
     // Here u can paste the link of a hack just delete the example. It will takes few seconds to load a hack.
-    const HACK_URL = 'https://raw.githubusercontent.com/lzhenwei76-beep/Scripts/refs/heads/main/stats-overlay.js'; 
+    const HACK_URL = 'https://raw.githubusercontent.com/lzhenwei76-beep/Scripts/refs/heads/main/slitheriohack.js'; 
 
     const LOADER_URL = 'https://raw.githubusercontent.com/lzhenwei76-beep/scriptloader/refs/heads/main/loader.js';
     
